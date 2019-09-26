@@ -1,0 +1,93 @@
+"""
+Roy Dolev
+
+"""
+import matplotlib.pyplot as plt
+import numpy as np
+
+def main():
+    dot_matrix = input_dots() # dots to matc to the graph.
+    best_a = 0 # values of graph that max dots on the graph
+    best_b = 0# values of graph that max dots on the graph
+    best_c = 0# values of graph that max dots on the graph
+    best_off_line = 11 # howmany dots are out of the line. 11 because max 
+    # number is 10, 11 will be changed at first time
+    best_sum_d = 0 # distance of the dots and the graph, min dots outside the
+    #graph.
+    print("dots matrix", str(dot_matrix))
+    for x in range(50):
+        a,b,c = input_abc() #a,b,c od the graph
+        sum_d,off_line = sum_distance(dot_matrix, a,b,c) #sum of disatnce 
+        #(dots and graph), num of dots outside the graph.
+        on_line = 10-off_line #num of dits on the graph
+        draw(a,b,c)
+        print("a:", a)
+        print("b:", b)
+        print("c:", c)
+        print("number of dots on the line: ", on_line)
+        print("number of dots off the line: ", off_line)
+        print("sum of distances of the dots from the line: ", sum_d)  
+        if best_off_line > off_line:
+            best_off_line = off_line
+            best_sum_d = sum_d
+            best_a = a
+            best_b = b
+            best_c = c
+        if off_line == 0:
+            break
+    print("best graph:")
+    print("number of dots on the line: ", 10-best_off_line)
+    print("number of dots off the line: ", best_off_line)
+    print("sum of distances of the dots from the line: ", best_sum_d)
+    print("best a:", best_a)
+    print("best_b:", best_b)
+    print("best_c:", best_c)
+    draw(best_a,best_b,best_c)
+    
+   
+def input_abc():
+    #output: values type int 
+    print("pls type 3 numbers: ")
+    a,b,c = input("A: "), input("B: "), input("C: ")# a,b,c of the function
+    return int(a),int(b),int(c)
+
+
+def draw(a,b,c):
+    #input: a,b,c of the function
+    #draw the graph
+    x = np.arange(0,100,0.01)# all x values of the graph
+    y = a * (x**2) + (b * x) + c # all y values of the graph
+    plt.plot(x,y)
+    plt.show()
+   
+def input_dots():
+    #output: dot matrix.
+    #dots that will be checked with the graph
+    a = [int(input("x of dot1: ")), int(input("y of dot1: "))]
+    b = [int(input("x of dot2: ")), int(input("y of dot2: "))]
+    c = [int(input("x of dot3: ")), int(input("y of dot3: "))]
+    d = [int(input("x of dot4: ")), int(input("y of dot4: "))]
+    e = [int(input("x of dot5: ")), int(input("y of dot5: "))]
+    f = [int(input("x of dot6: ")), int(input("y of dot6: "))]
+    g = [int(input("x of dot7: ")), int(input("y of dot7: "))]
+    h = [int(input("x of dot8: ")), int(input("y of dot8: "))]
+    i = [int(input("x of dot9: ")), int(input("y of dot9: "))]
+    j = [int(input("x of dot10: ")), int(input("y of dot10: "))]
+    dot_matrix = [a,b,c,d,e,f,g,h,i,j] #matrix of the dots
+    return dot_matrix
+
+def sum_distance(dot_matrix, a, b, c):
+    #input: dot matrix, a,b,c of the function.
+    #output: sum of distance(dots and graph), num pf dots outside the graph.
+    distance = 0 #dostance of dot and the graph(same x value)
+    off_line = 0 #num of dots outside the graph.
+    s_distance = 0#sum distance of all dots in the matrix
+    for dot in dot_matrix:
+        x = dot[0]# x of dot in matrix
+        distance = np.abs(dot[1]- (a * (x**2) + (b * x) + c))
+        if distance != 0:
+            off_line +=1
+        s_distance += distance
+    return s_distance, off_line
+
+main()
